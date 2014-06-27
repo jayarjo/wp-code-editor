@@ -132,7 +132,9 @@ class WCE extends Plugino {
 	function f__the_editor_content($content)
 	{
 		// expand one-liner tags and indent
-		require_once("{$this->path}/tools/htmLawed.php");
+		if (!function_exists('htmLawed')) {
+			require_once("{$this->path}/tools/htmLawed.php");
+		}
 		return htmLawed($content, array('tidy' => '1t1'));
 	}
 
