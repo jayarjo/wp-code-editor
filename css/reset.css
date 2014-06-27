@@ -1,0 +1,36 @@
+
+#templateside {
+	overflow: auto;
+}
+
+#templateside h3,
+#templateside ul {
+	display: none;
+}
+
+#templateside .wce-tree ul,
+#templateside h3.wce-h3 {
+	display: block;
+} 
+
+#templateside ul,
+#templateside li {
+	margin: 0;
+}
+
+#templateside li {
+	margin-left: 24px;
+}
+
+#templateside .wce-tree > ul > li {
+	margin-left: 0;
+}
+
+#templateside li a {
+	display: inline;
+	padding: 0;
+}
+
+#templateside .jstree-container-ul {
+	margin-left: -6px;
+}
