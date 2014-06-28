@@ -23,19 +23,25 @@
 
 		ace.require("ace/ext/language_tools");
 		ed = ace.edit('wce-'+id);
+		sess = ed.getSession();
+
 		ed.setTheme("ace/theme/monokai");
 		ed.renderer.setScrollMargin(5, 5, 0, 0);
 		ed.setOptions({
 			enableBasicAutocompletion: true
 		});
 
-		sess = ed.getSession();
+		ed.on('paste', function() {
+			$textArea.val(ed.getSession().getValue());
+		});
+
+		ed.on('change', function() {
+			$textArea.val(ed.getSession().getValue());
+		});
+	
 		sess.setMode("ace/mode/" + (ext2mode[mode] || mode || "html"));
 		sess.setUseWrapMode(true);
-		sess.setValue($textArea.val());
-		sess.on('change', function() {
-			$textArea.val(sess.getValue());
-		});
+		sess.setValue($textArea.val());	
 
 		$('#wce-'+id).data('ace', ed);
 		return ed;
@@ -137,7 +143,7 @@
 
 	$('#newcontent').each(function() {
 		var $this = $(this), id = $this.attr('id'), file;
-		// there's explicit css rule (#tmaplate div) that breaks the editor
+		// there's explicit css rule (#template div) that breaks the editor
 		$this.closest('#template').before('<div id="wce-'+id+'" />');
 
 		// load corresponding mode depending on the requested file type
