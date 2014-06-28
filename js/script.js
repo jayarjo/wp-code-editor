@@ -25,7 +25,7 @@
 		ed = ace.edit('wce-'+id);
 		ed.setTheme("ace/theme/monokai");
 		ed.setOptions({
-		    enableBasicAutocompletion: true
+			enableBasicAutocompletion: true
 		});
 
 		sess = ed.getSession();
@@ -37,9 +37,10 @@
 		});
 
 		$('#wce-'+id).data('ace', ed);
+		return ed;
 	}
 
-
+ 
 	function initJSTree(data) {
 		var $container = $('#templateside')
 		, $ul
@@ -87,11 +88,20 @@
 
 	var WCE = {
 		show: function(id, mode) {
-			var $ed = $('#wce-'+id), $textArea = $('#'+id), h, w;
-			if (!$ed.data('ace')) {
-				initACE(id, mode);
+			var $ed = $('#wce-'+id)
+			, $textArea = $('#'+id)
+			, h
+			, w
+			, ed = $ed.data('ace')
+			;
+
+			if (!ed) {
+				ed = initACE(id, mode);
 			}
 
+			// sync the content
+			ed.getSession().setValue($textArea.val());
+			
 			w = parseInt($textArea.css('width') || $textArea.width(), 10);
 			h = parseInt($textArea.css('height') || $textArea.height(), 10);
 
@@ -100,7 +110,7 @@
 				height: h+'px'
 			}).show();
 
-			$ed.data('ace').resize(true);
+			ed.resize(true);
 			$textArea.hide();
 		},
 
