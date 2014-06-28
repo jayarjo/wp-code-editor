@@ -52,6 +52,9 @@ class WCE extends WCE_Plugino {
 
 	function a__wp_enqueue_editor($params = array())
 	{
+		// disable quicktags, even if they can be made to work with code editor, solution is too complicated and doesn't worth it
+		wp_deregister_script('quicktags');
+		
 		wp_enqueue_script('wce-ace', "{$this->url}/js/ace/ace.js", null, $this->version, true);
 		wp_enqueue_script('wce-ace-lang-tools', "{$this->url}/js/ace/ext-language_tools.js", array('wce-ace'), $this->version, true);
 		wp_enqueue_script('wce-script', "{$this->url}/js/script.js", array('jquery', 'wce-ace'), $this->version, true);
@@ -127,14 +130,6 @@ class WCE extends WCE_Plugino {
 
 		echo json_encode(array_values($data));
 		exit;
-	}
-
-
-	// switch quicktags to our own editors
-	function f_10_2__quicktags_settings($qtInit, $editor_id)
-	{
-		$qtInit['id'] = "wce-{$qtInit['id']}";
-		return $qtInit;
 	}
 
 
