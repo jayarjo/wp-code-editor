@@ -24,6 +24,7 @@
 		ace.require("ace/ext/language_tools");
 		ed = ace.edit('wce-'+id);
 		ed.setTheme("ace/theme/monokai");
+		ed.renderer.setScrollMargin(5, 5, 0, 0);
 		ed.setOptions({
 			enableBasicAutocompletion: true
 		});
