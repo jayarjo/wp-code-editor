@@ -130,6 +130,14 @@ class WCE extends WCE_Plugino {
 	}
 
 
+	// switch quicktags to our own editors
+	function f_10_2__quicktags_settings($qtInit, $editor_id)
+	{
+		$qtInit['id'] = "wce-{$qtInit['id']}";
+		return $qtInit;
+	}
+
+
 	// beautify html for post edit screens
 	function f__the_editor_content($content)
 	{
