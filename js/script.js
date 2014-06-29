@@ -74,7 +74,6 @@
 			type: isPlugin ? 'plugin' : 'theme',
 			ext: ext
 		}, function(data) {
-			console.info(data);
 			$ul.after($tree);
 
 			$tree
