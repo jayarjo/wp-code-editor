@@ -31,8 +31,7 @@ or
 
 == Screenshots ==
 
-1. 
-2. 
+1.
 
 == Changelog ==
 
