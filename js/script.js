@@ -101,6 +101,9 @@
 			, ed = $ed.data('ace')
 			;
 
+			// hide quicktags toolbar, since it won't function anyway
+			$('.quicktags-toolbar').hide();
+
 			if (!ed) {
 				ed = initACE(id, mode);
 			}
