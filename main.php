@@ -3,7 +3,7 @@
 Plugin Name: WP Code Editor
 Plugin URI: http://wordpress.org/support/plugin/wp-code-editor
 Description: Adds proper code editor to all code editing textareas, including the Text tab of post edit screens
-Version: 0.9b
+Version: 0.9
 Author: Davit Barbakadze
 Author URI: http://wordpress.org/support/profile/jayarjo
 */
