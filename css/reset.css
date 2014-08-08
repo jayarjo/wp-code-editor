@@ -34,3 +34,7 @@
 #templateside .jstree-container-ul {
 	margin-left: -6px;
 }
+
+select#plugin {
+	width: 150px;
+}
