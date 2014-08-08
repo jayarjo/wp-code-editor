@@ -18,7 +18,8 @@
 	function initACE(id, mode) {
 		var $textArea = $('#'+id), ed, sess;
 		var ext2mode = {
-			js: 'javascript'
+			js: 'javascript',
+			txt: 'markdown'
 		};
 
 		ace.require("ace/ext/language_tools");
