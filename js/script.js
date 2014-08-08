@@ -23,14 +23,22 @@
 		};
 
 		ace.require("ace/ext/language_tools");
+		if (WCE.options.emmetOn) {
+			ace.require("ace/ext/emmet");
+		}
+
 		ed = ace.edit('wce-'+id);
 		sess = ed.getSession();
 
-		ed.setTheme("ace/theme/monokai");
+		ed.setTheme("ace/theme/" + WCE.options.theme);
 		ed.renderer.setScrollMargin(5, 5, 0, 0);
 		ed.setOptions({
 			enableBasicAutocompletion: true
 		});
+
+		if (WCE.options.emmetOn) {
+			ed.setOption("enableEmmet", true);
+		}
 
 		ed.on('paste', function() {
 			$textArea.val(ed.getSession().getValue());
@@ -42,7 +50,7 @@
 	
 		sess.setMode("ace/mode/" + (ext2mode[mode] || mode || "html"));
 		sess.setUseWrapMode(true);
-		sess.setValue($textArea.val());	
+		sess.setValue($textArea.val());
 
 		$('#wce-'+id).data('ace', ed);
 		return ed;
@@ -93,7 +101,7 @@
 	}
 
 
-	var WCE = {
+	var WCE = $.extend({
 		show: function(id, mode) {
 			var $ed = $('#wce-'+id)
 			, $textArea = $('#'+id)
@@ -127,8 +135,13 @@
 		hide: function(id) {
 			$('#'+id).show();
 			$('#wce-'+id).hide();
+		},
+
+		options: {
+			theme: "monokai",
+			emmetOn: false
 		}
-	};
+	}, window.WCE);
 
 
 	$('.wp-editor-area').each(function() {

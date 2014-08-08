@@ -3,7 +3,7 @@
 Plugin Name: WP Code Editor
 Plugin URI: http://wordpress.org/support/plugin/wp-code-editor
 Description: Adds proper code editor to all code editing textareas, including the Text tab of post edit screens
-Version: 0.1
+Version: 0.9b
 Author: Davit Barbakadze
 Author URI: http://wordpress.org/support/profile/jayarjo
 */
@@ -31,9 +31,45 @@ require_once(dirname(__FILE__) . '/i8/class.Plugino.php');
 
 class WCE extends WCE_Plugino {
 
+	public $pages = array(
+		array(
+			'title' => "WP Code Editor",
+			'handle' => 'page_options',
+			'parent' => 'options'
+		)
+	);
+
+
+	public $options = array(
+		'theme' => array(
+			'type' => 'select_theme',
+			'label' => "Theme",
+			'value' => 'monokai'
+		),
+		'enable_emmet' => array(
+			'type' => 'checkbox',
+			'label' => "Enable Emmet",
+			'desc' => 'Emmet greatly improves HTML & CSS workflow. More info can be found <a href="http://emmet.io/" target="_blank">here</a>.'
+		)
+	);
+
+
 	function __construct()
 	{
 		parent::__construct(__FILE__);
+	}
+
+
+	function a__admin_footer()
+	{
+		?><script>
+			WCE = {
+				options: {
+					On: <?php echo intval($this->o('enable_emmet')); ?>,
+					theme: "<?php echo $this->o('theme'); ?>"
+				}
+			};
+		</script><?php
 	}
 
 
@@ -53,6 +89,13 @@ class WCE extends WCE_Plugino {
 	function a__wp_enqueue_editor($params = array())
 	{
 		wp_enqueue_script('wce-ace', "{$this->url}/js/ace/ace.js", null, $this->version, true);
+
+
+		if ($this->o('enable_emmet')) {
+			wp_enqueue_script('wce-emmet', "https://nightwing.github.io/emmet-core/emmet.js", null, null, true);
+			wp_enqueue_script('wce-ace-emmet', "{$this->url}/js/ace/ext-emmet.js", array('wce-ace'), $this->version, true);
+		}
+
 		wp_enqueue_script('wce-ace-lang-tools', "{$this->url}/js/ace/ext-language_tools.js", array('wce-ace'), $this->version, true);
 		wp_enqueue_script('wce-script', "{$this->url}/js/script.js", array('jquery', 'wce-ace'), $this->version, true);
 	}
@@ -138,6 +181,33 @@ class WCE extends WCE_Plugino {
 			require_once("{$this->path}/tools/htmLawed.php");
 		}
 		return htmLawed($content, array('tidy' => '1t1'));
+	}
+
+
+	function page_options()
+	{
+		$this->options_form();
+	}
+
+
+	function options_field_select_theme($name, &$o)
+	{
+		$themes = array();
+		if (!$files = glob("{$this->path}/js/ace/theme-*")) {
+			echo "Themes not available.";
+			return;
+		}
+
+		?><select id="option-<?php echo $name; ?>" name="<?php $this->the_o($name); ?>" class="<?php echo $class; ?>"><?php	
+		foreach ($files as $file) {
+			if (preg_match('{theme\-([\w]+)\.js$}', $file, $matches)) {
+				$theme = $matches[1];
+				$theme_name = ucwords(str_replace('_', ' ', $theme));
+				?><option value="<?php echo $theme; ?>" <?php if ($theme == $this->o($name)) echo 'selected="selected"'; ?>><?php echo $theme_name; ?></option><?php
+			}
+		}
+
+		?></select><?php
 	}
 
 
